@@ -1,14 +1,20 @@
 import face_recognition
 import os 
 import  shutil 
+import sys
 
-photos = os.listdir('test')
+
+PHOTOS_PATH = sys.argv[1] + '/'
+DESTINATION_PATH = sys.argv[2] + '/'
+
+
+photos = os.listdir(PHOTOS_PATH)
 raw_encodes = []
 
 
 for index, image in enumerate(photos):
-    path = "test/"+image
-    print(path)
+    path = PHOTOS_PATH+image
+
     image_file = face_recognition.load_image_file(path)
     print("Analisando imagem",image," ...")
     try:
@@ -46,13 +52,11 @@ for photo_encodes in raw_encodes:
 
 print("Separando fotos...")
 
-
+os.mkdir(DESTINATION_PATH)
 for i,people in enumerate(people_final):
     
-    os.mkdir(str(i))
-    for photo_i in people:
-        print(photo_i)
-        print(photos)
-        file_path = 'test/'+photos[photo_i]
-        shutil.copy(file_path, str(i))
+    os.mkdir(DESTINATION_PATH+str(i))
+    for photo_i in people: 
+        shutil.copy(PHOTOS_PATH+photos[photo_i], DESTINATION_PATH+str(i)+'/')
+print("Pronto")
     
