@@ -3,7 +3,7 @@ import os
 import  shutil 
 import sys
 
-
+#diretórios de source e destino
 PHOTOS_PATH = sys.argv[1] + '/'
 DESTINATION_PATH = sys.argv[2] + '/'
 
@@ -12,6 +12,7 @@ photos = os.listdir(PHOTOS_PATH)
 raw_encodes = []
 
 
+#separação dos encodes das fotos
 for index, image in enumerate(photos):
     path = PHOTOS_PATH+image
 
@@ -27,6 +28,8 @@ for index, image in enumerate(photos):
         continue
 
 
+
+#separação do nome das fotos no array
 print("Separando pessoas...")
 i = 0
 known_people = []
@@ -50,8 +53,9 @@ for photo_encodes in raw_encodes:
     i += 1
 
 
-print("Separando fotos...")
 
+#separação das fotos nas pastas
+print("Separando fotos...")
 os.mkdir(DESTINATION_PATH)
 for i,people in enumerate(people_final):
     
