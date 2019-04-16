@@ -4,10 +4,10 @@ import  shutil
 import sys
 
 
-PHOTOS_PATH = sys.argv[1]
-DESTINATION_PATH = sys.argv[2]
+PHOTOS_PATH = sys.argv[1] + '/'
+DESTINATION_PATH = sys.argv[2] + '/'
 
-print(PHOTOS_PATH)
+
 photos = os.listdir(PHOTOS_PATH)
 raw_encodes = []
 
@@ -55,7 +55,8 @@ print("Separando fotos...")
 os.mkdir(DESTINATION_PATH)
 for i,people in enumerate(people_final):
     
+    os.mkdir(DESTINATION_PATH+str(i))
     for photo_i in people: 
-        shutil.copy(PHOTOS_PATH+photos[photo_i], DESTINATION_PATH+str(i))
+        shutil.copy(PHOTOS_PATH+photos[photo_i], DESTINATION_PATH+str(i)+'/')
 print("Pronto")
     
