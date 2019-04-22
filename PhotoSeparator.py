@@ -1,6 +1,8 @@
 import face_recognition
 import os 
 import  shutil 
+from PIL import Image 
+import PIL
 
 
 
@@ -16,19 +18,38 @@ class PhotoSeparator:
     def separateEncodes(self):
         for index, image in enumerate(self.photos):
             
-                path = self.PHOTOS_PATH+image
-
-                image_file = face_recognition.load_image_file(path)
-                print("Analisando imagem",image," ...")
-                try:
-                    encodings = face_recognition.face_encodings(image_file)
-
-                    self.raw_encodes.append(encodings)
+                image_not_pass = False
+                while True:
                     
-                except IndexError:
-                    print("Foto sem rostos:", image)
-                except MemoryError:
-                    print("foto muito grande")
+                    path = self.PHOTOS_PATH+image
+
+
+                    if(image_not_pass):
+                        im = Image.open(path) 
+                        wpercent = (300 / float(im.size[0]))
+                        hsize = int((float(im.size[1]) * float(wpercent)))
+                        im = im.resize((300, hsize), PIL.Image.ANTIALIAS)
+                        im.save(path, quality = 10)
+
+                    
+                    
+
+                    image_file = face_recognition.load_image_file(path)
+                    print("Analisando imagem",image," ...")
+                    try:
+                        encodings = face_recognition.face_encodings(image_file)
+
+                        self.raw_encodes.append(encodings)
+                        
+                    except IndexError:
+                        print("Foto sem rostos:", image)
+                    except MemoryError:
+                        print("Foto muito pesada, reduzindo...")
+                        image_not_pass = True
+                    else:
+                        print("Pronto")
+                        break
+                    
                 
     
     def analyseEncodes(self):
@@ -42,11 +63,18 @@ class PhotoSeparator:
 
                 if(not True in known_people_scan):
                     while(tmp_i < len(self.raw_encodes)):
-                        results = face_recognition.compare_faces(encode, self.raw_encodes[tmp_i])
+                        try:
+                            results = face_recognition.compare_faces(encode, self.raw_encodes[tmp_i])
 
-                        if(True in results):
-                                encode_photos.append(tmp_i)
-                        tmp_i+= 1
+                            if(True in results):
+                                    encode_photos.append(tmp_i)
+                            
+                        except:
+                            tmp_i+= 1
+                            continue
+                        else:
+                            tmp_i +=1
+
                     self.known_people.append(encode)
                     self.people_final.append(encode_photos)
             i += 1
