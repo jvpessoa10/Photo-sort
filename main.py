@@ -4,8 +4,8 @@ import  shutil
 import sys
 
 
-PHOTOS_PATH = sys.argv[1]
-DESTINATION_PATH = sys.argv[2]
+PHOTOS_PATH = sys.argv[1]+"/"
+DESTINATION_PATH = sys.argv[2]+"/"
 
 print(PHOTOS_PATH)
 photos = os.listdir(PHOTOS_PATH)
@@ -24,7 +24,7 @@ for index, image in enumerate(photos):
         
     except IndexError:
         print("Foto sem rostos:", image)
-        continue
+        
 
 
 print("Separando pessoas...")
@@ -43,7 +43,7 @@ for photo_encodes in raw_encodes:
                 results = face_recognition.compare_faces(encode, raw_encodes[tmp_i])
 
                 if(True in results):
-                    encode_photos.append(tmp_i)
+                        encode_photos.append(tmp_i)
                 tmp_i+= 1
             known_people.append(encode)
             people_final.append(encode_photos)
@@ -54,7 +54,7 @@ print("Separando fotos...")
 
 os.mkdir(DESTINATION_PATH)
 for i,people in enumerate(people_final):
-    
+
     for photo_i in people: 
         shutil.copy(PHOTOS_PATH+photos[photo_i], DESTINATION_PATH+str(i))
 print("Pronto")
