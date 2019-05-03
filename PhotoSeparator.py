@@ -41,11 +41,9 @@ class PhotoSeparator:
         for index, image in enumerate(self.photos):
                 print(index+1," de ",len(self.photos)," fotos")
             
-                path =  self.PHOTOS_PATH+ image
-                
+                path =  self.PHOTOS_PATH+ image 
             
                 try:
-
                     i = 0
                     
                     while(i<5):
@@ -57,13 +55,11 @@ class PhotoSeparator:
 
                         colorImage  = Image.open(path)
                         transposed  = colorImage.transpose(Image.ROTATE_90)
-                        transposed.save(path,quality=100)
-                        
+                        transposed.save(path,quality=100) 
                         print("Rostos: ",len(encodings))
                         i +=1
                         encodings = []
 
-                    
                     self.raw_encodes.append(encodings)
                     
                 except IndexError:
